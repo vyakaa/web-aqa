@@ -20,6 +20,8 @@ jobs:
           node-version: lts/*
       - name: Install dependencies
         run: npm install --legacy-peer-deps
+      - name: Build the app
+        run: npm next build
       - name: Run the app
         run: npm run start
       - name: Install Playwright Browsers
