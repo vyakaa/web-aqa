@@ -18,7 +18,7 @@ export default defineConfig({
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   retries: 3,
-  workers: 3,
+  // workers: 3,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   // Each test is given 30 seconds.
