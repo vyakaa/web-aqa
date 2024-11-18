@@ -71,7 +71,7 @@ By default, it will be `http://localhost:3000` (aka `origin`)
 - Attempt login with a password that is too short or too long, ensuring appropriate validation messages are displayed
 - Ensure the user is redirected to the appropriate homepage or dashboard after a successful login
 - Ensure the login form error messages are clear, concise, and do not expose sensitive details
-- Ensure a spinner appears during login attempts
+- Ensure a spinner appears during pages load
 - !!! Verify if the system respects case sensitivity for both usernames and passwords, as per requirements
 - !!! Attempt login with special characters in the username and password fields to verify input handling
 - !!! Test logging in from multiple devices or browsers with the same account and verify session handling
@@ -119,6 +119,7 @@ By default, it will be `http://localhost:3000` (aka `origin`)
 - W004: [Medium] [History] It is impossible to access neither uploaded nor converted files from history
 - W010: [Medium] [Upload] 'Files uploaded' counter is not updated after successful upload unless refresh a page
 - W008: [Low] [Home] Click on logo does not redirect to home page // reproduce for all pages!
+  -W011: [Low] [Home] No spinner when pages load
 
 ### TODO
 

@@ -2,15 +2,16 @@ import { Locator } from '@playwright/test';
 import { BasePage } from './basePage';
 
 export class LoginPage extends BasePage {
-  readonly _emailInput: Locator = this.page.getByTestId('phone-number-field');
-  readonly _passwordInput: Locator =
-    this.page.getByTestId('phone-number-field');
-  readonly _submitButton: Locator = this.page.getByTestId('confirm-btn');
-  readonly _systemAlert: Locator = this.page.locator('#notistack-snackbar');
+  readonly _emailInput: Locator = this.page.locator('input[name="email"]');
+  readonly _passwordInput: Locator = this.page.locator(
+    'input[name="password"]'
+  );
+  readonly _submitButton: Locator = this.page.locator('button[type="submit"]');
+  readonly _alert: Locator = this.page.locator('.alert');
 
-  // async open() {
-  //   await this.page.goto();
-  // }
+  async open() {
+    await this.page.goto('http://localhost:3000/');
+  }
 
   async enterEmail(email: string) {
     await this._emailInput.fill(email);
@@ -22,16 +23,19 @@ export class LoginPage extends BasePage {
 
   async clickSubmitButton() {
     await this._submitButton.click();
-    await this.waitForLinkIsSentMessage();
   }
 
-  async getBannerText() {
-    return await this._systemAlert.innerText();
+  async loginWithCredentials(email: string, password: string) {
+    await this.enterEmail(email);
+    await this.enterPassword(password);
+    await this.clickSubmitButton();
   }
 
-  async waitForLinkIsSentMessage() {
-    await this.page.waitForSelector('#notistack-snackbar', {
-      state: 'visible',
-    });
+  async isAlertEnabled() {
+    return await this._alert.isVisible();
+  }
+
+  async getAlertText() {
+    return await this._alert.innerText();
   }
 }
