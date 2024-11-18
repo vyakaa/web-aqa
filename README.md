@@ -1,5 +1,7 @@
 # PoC for testing a web PDF Convert application with Playwright
 
+[![Playwright Tests](https://github.com/vyakaa/web-aqa/actions/workflows/playwright.yml/badge.svg)](https://github.com/vyakaa/web-aqa/actions/workflows/playwright.yml)
+
 ## Project Description
 
 - Project setup with Playwright version 1.48.2. A config file is in `./playwright.config.ts` directory.
