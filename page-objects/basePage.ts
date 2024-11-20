@@ -2,13 +2,15 @@ import { Locator, Page } from '@playwright/test';
 
 export class BasePage {
   readonly page: Page;
-  readonly _alert: Locator;
+  readonly _alertError: Locator;
+  readonly _alertSuccess: Locator;
   readonly _logoHeader: Locator;
   readonly _logoutButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
-    this._alert = this.page.locator('.alert');
+    this._alertError = this.page.locator('.alert-error');
+    this._alertSuccess = this.page.locator('.alert-success');
     this._logoHeader = this.page.locator('.text-xl');
     this._logoutButton = this.page.locator('.btn-neutral');
   }
@@ -21,11 +23,15 @@ export class BasePage {
     await this._logoutButton.click();
   }
 
-  async isAlertDisplayed() {
-    return await this._alert.isVisible();
+  async isErrorAlertDisplayed() {
+    return await this._alertError.isVisible();
+  }
+
+  async isSuccessAlertDisplayed() {
+    return await this._alertSuccess.isVisible();
   }
 
   async getAlertText() {
-    return await this._alert.innerText();
+    return await this.page.locator('.alert').innerText();
   }
 }

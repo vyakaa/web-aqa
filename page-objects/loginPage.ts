@@ -3,9 +3,7 @@ import { BasePage } from './basePage';
 
 export class LoginPage extends BasePage {
   readonly _emailInput: Locator = this.page.locator('input[name="email"]');
-  readonly _passwordInput: Locator = this.page.locator(
-    'input[name="password"]'
-  );
+  readonly _passwordInput: Locator = this.page.locator('input[name="password"]');
   readonly _submitButton: Locator = this.page.locator('button[type="submit"]');
 
   async open() {

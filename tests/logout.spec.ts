@@ -8,15 +8,12 @@ import { HistoryPage } from '../page-objects/historyPage';
   { pageName: 'convert', newPageFunc: (page: Page) => new ConvertPage(page) },
   { pageName: 'history', newPageFunc: (page: Page) => new HistoryPage(page) },
 ].forEach(({ pageName, newPageFunc }) => {
-  test.fail(
-    `TC_006: should logout successfully from ${pageName} page`,
-    async ({ page }) => {
-      const newPage = newPageFunc(page);
-      await newPage.open();
-      await newPage.clickLogout();
+  test.fail(`TC_006, B007: should logout successfully from ${pageName} page`, async ({ page }) => {
+    const newPage = newPageFunc(page);
+    await newPage.open();
+    await newPage.clickLogout();
 
-      expect(page.url()).toBe('http://localhost:3000/');
-      expect((await page.context().storageState()).cookies).toBeNull();
-    }
-  );
+    expect(page.url()).toBe('http://localhost:3000/');
+    expect((await page.context().storageState()).cookies).toBeNull();
+  });
 });

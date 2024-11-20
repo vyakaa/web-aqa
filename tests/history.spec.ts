@@ -5,49 +5,63 @@ import { ConvertPage } from '../page-objects/convertPage';
 let convertPage: ConvertPage;
 let historyPage: HistoryPage;
 
+const VALID_PDF = 'test.pdf';
+const EMPTY_PDF = 'empty.pdf';
+
 test.beforeEach(async ({ page }) => {
   convertPage = new ConvertPage(page);
-  historyPage = new HistoryPage(page);
-  await convertPage.open();
-  await convertPage.uploadAndConvertFile('test.pdf');
 
-  // await historyPage.open();
+  await convertPage.open();
+  await convertPage.uploadAndConvertFile(VALID_PDF);
+  await convertPage.open();
+  await convertPage.uploadAndConvertFile(EMPTY_PDF);
   await convertPage.goToUploadHistory();
+
+  historyPage = new HistoryPage(page);
+  await page.waitForURL('**/history');
+  await page.waitForSelector('text="Loading history..."', { state: 'hidden' });
 });
 
 test('TC_020: should open history page by direct url', async ({ page }) => {
   await page.reload();
+
   await expect(page).toHaveURL('/history');
 });
 
-test('TC015: history should contain records on each conversion', async () => {
-  const { count, entries } = await historyPage.getEntries();
-  expect(count).toBe(2);
+test.fail('TC_017, B004: history should contain records on each conversion', async () => {
+  const date = new Date();
+  const formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
 
-  for (const entry in entries) {
-    expect(entry).toBe('');
-  }
+  const { firstEntry, secondEntry } = await historyPage.getHistoryEntries();
+  const fileNamesPattern = new RegExp(/test.pdf|empty.pdf/);
 
-  // file name
-  // file extension
-  // file size
-  // conversion status
+  expect(firstEntry.status).toEqual(expect.stringMatching(/☑️|✅|❌|🗑️/));
+  expect(firstEntry.date).toBe(formattedDate);
+  expect(firstEntry.fileName).toEqual(expect.stringMatching(fileNamesPattern));
+  expect.soft(Number.parseInt(firstEntry.fileSize.split(' ')[0])).toBeGreaterThan(500);
+
+  expect(secondEntry.status).toEqual(expect.stringMatching(/☑️|✅|❌|🗑️/));
+  expect(secondEntry.date).toBe(formattedDate);
+  expect(secondEntry.fileName).toEqual(expect.stringMatching(fileNamesPattern));
+  expect.soft(Number.parseInt(secondEntry.fileSize.split(' ')[0])).toBeGreaterThan(500);
 });
 
-test('TC016: history should be possible to clear', async () => {
+test('TC_018: history should be possible to clear', async ({ page }) => {
   await historyPage.clearAllEntries();
-  expect((await historyPage.getEntries()).count).toBe(0);
+
+  expect(await historyPage.getEntriesCount()).toEqual(0);
+  expect(page.getByText('- No history yet -')).toBeVisible();
 });
 
-test('TC017: each history record should be possible to delete', async ({
-  page,
-}) => {
-  const filesCountBefore = (await historyPage.getEntries()).count;
+test('TC_019: each history record should be possible to delete', async ({ page }) => {
+  const filesCountBefore = await historyPage.getEntriesCount();
   await historyPage.clearFirstHoveredEntry();
 
-  const filesCountAfter = (await historyPage.getEntries()).count;
-  expect(filesCountAfter).toBeLessThan(await filesCountBefore);
+  let filesCountAfter = await historyPage.getEntriesCount();
+  expect(filesCountAfter).toEqual(filesCountBefore - 1);
 
-  if ((await filesCountAfter) === 0)
-    expect(page.getByText('- No history yet -')).toBeVisible();
+  await historyPage.clearFirstHoveredEntry();
+  filesCountAfter = await historyPage.getEntriesCount();
+
+  if (filesCountAfter === 0) expect(page.getByText('- No history yet -')).toBeVisible();
 });

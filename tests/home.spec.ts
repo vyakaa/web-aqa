@@ -10,17 +10,18 @@ test.beforeEach(async ({ page }) => {
 
 test('TC_020: should open home page by direct url', async ({ page }) => {
   await page.reload();
-  await expect(page).toHaveURL('');
+
+  expect(page.url()).toBe('http://localhost:3000/');
 });
 
 test('TC_007: should display logo and logout button', async () => {
   expect(homePage._logoHeader).toBeVisible();
-  expect(await homePage._logoHeader.innerText()).toBe('⌨️ LOGO 🥸');
   expect(homePage._logoutButton).toBeVisible();
+  expect(await homePage._logoHeader.innerText()).toBe('⌨️ LOGO 🥸');
 });
 
 test('TC: should display welcome message and link to converter', async () => {
   const welcomeMessage = await homePage.getWelcomeMessage();
-  expect(welcomeMessage).toContain('Welcome!');
-  expect(welcomeMessage).toContain('Go to Convert PDF');
+
+  expect(welcomeMessage).toBe('Welcome!\nGo to Convert PDF');
 });

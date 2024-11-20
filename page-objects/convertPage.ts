@@ -1,53 +1,38 @@
 import { Locator } from '@playwright/test';
 import { BasePage } from './basePage';
 import { readFileSync } from 'fs';
+import fs from 'fs';
 
 export class ConvertPage extends BasePage {
-  readonly _uploadFileButton: Locator = this.page
-    .locator('div')
-    .filter({ hasText: "Drag 'n' drop PDF files here," });
-  readonly _convertFileButton: Locator = this.page.getByRole('button', {
-    name: 'Convert PDF file',
-  });
-  readonly _deleteUploadedFileButton: Locator = this.page
-    .getByRole('button')
-    .nth(1);
-  readonly _goToUploadHistoryButton: Locator = this.page.getByRole('link', {
-    name: 'Go to upload history, files',
-  });
+  readonly _uploadFileButton: Locator = this.page.locator('input[type="file"]');
+  readonly _convertFileButton: Locator = this.page.locator('button[type="submit"]');
+  readonly _deleteFileButton: Locator = this.page.locator('.btn-square');
+  readonly _goToUploadHistoryButton: Locator = this.page.locator('.link');
+  readonly _downloadConvertedFileButton: Locator = this.page.locator('.card-actions > a');
 
   async open() {
     await this.page.goto('/convert', { waitUntil: 'networkidle' });
   }
 
   async uploadFile(name: string) {
-    // const fileChooserPromise = this.page.waitForEvent('filechooser');
-    // await this._uploadFileButton.click();
-    // const fileChooser = await fileChooserPromise;
-    // await fileChooser.setFiles(`../test-files/${name}`);
-
-    // Read your file into a buffer.
     const buffer = readFileSync(`./test-files/${name}`);
-
-    // Create the DataTransfer and File
-    const dataTransfer = await this.page.evaluateHandle((data) => {
+    const arg = { fileName: name, buffer: buffer };
+    const dataTransfer = await this.page.evaluateHandle((arg) => {
       const dt = new DataTransfer();
-      // Convert the buffer to a hex array
-      const file = new File([data.toString('hex')], 'test.pdf', {
-        type: 'application/pdf',
+      const file = new File([arg.buffer.toString('hex')], `${arg.fileName}`, {
+        type: `application/${arg.fileName.split('.')[1]}`,
       });
       dt.items.add(file);
       return dt;
-    }, buffer);
+    }, arg);
 
-    // Now dispatch
     await this.page.dispatchEvent('input[type="file"]', 'drop', {
       dataTransfer,
     });
   }
 
   async deleteUploadedFile() {
-    await this._deleteUploadedFileButton.click();
+    await this._deleteFileButton.click();
   }
 
   async clickConvert() {
@@ -57,7 +42,15 @@ export class ConvertPage extends BasePage {
   async uploadAndConvertFile(name: string) {
     await this.uploadFile(name);
     await this.clickConvert();
-    // wait for upload progress to finish
+    await this.waitForProgressBarToDisappear();
+  }
+
+  async getUploadedFileDetails() {
+    return {
+      name: `${await this.page.locator('.card-title').innerText()}`,
+      type: `${await this.page.locator('.card-body > p').nth(0).innerText()}`,
+      size: `${await this.page.locator('.card-body > p').nth(1).innerText()}`,
+    };
   }
 
   async goToUploadHistory() {
@@ -65,10 +58,45 @@ export class ConvertPage extends BasePage {
   }
 
   async getUploadHistoryText() {
-    return await this._goToUploadHistoryButton.textContent();
+    return await this._goToUploadHistoryButton.innerText();
   }
 
-  async downloadConvertedFile() {}
+  async getUploadHistoryFilesCount() {
+    const filesCount = (await this.getUploadHistoryText()).split(' ').at(-1);
+    return Number.parseInt(String(filesCount));
+  }
 
-  async deleteConvertedFile() {}
+  async isDownloadConvertedFileAvailable() {
+    return await this._downloadConvertedFileButton.isVisible();
+  }
+
+  async getDownloadConvertedFileLink() {
+    return await this._downloadConvertedFileButton.getAttribute('href');
+  }
+
+  async downloadConvertedFile() {
+    if (!(await this.isDownloadConvertedFileAvailable())) return;
+
+    const [download] = await Promise.all([
+      this.page.waitForEvent('download'),
+      this._downloadConvertedFileButton.click(),
+    ]);
+
+    const path = './test-files/' + download.suggestedFilename();
+    await download.saveAs(path);
+
+    const details = {
+      name: download.suggestedFilename(),
+      size: (await fs.promises.stat(path)).size,
+    };
+    return details;
+  }
+
+  async deleteConvertedFile() {
+    await this._deleteFileButton.click();
+  }
+
+  async waitForProgressBarToDisappear() {
+    await this.page.waitForSelector('.progress', { state: 'hidden' });
+  }
 }

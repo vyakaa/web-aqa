@@ -6,7 +6,10 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "tests": "playwright test",
+    "tests:check_for_flakiness": "playwright test tests/ --workers 4 --repeat-each=5 --project=chromium",
+    "report": "npx playwright show-report"
   },
   "dependencies": {
     "next": "15.0.1",

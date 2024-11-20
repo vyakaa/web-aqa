@@ -20,11 +20,11 @@ export const config = {
     },
     config: {
       isAuthRequired: false, // TRUE or FALSE, if yes redirects back to auth on direct page load, default TRUE
-      pageLoadDelay: 0, // Milliseconds, 0 to disable, default 5_000
-      conversionTime: 0, // Milliseconds, 0 to disable, default 10_000
+      pageLoadDelay: 1_000, // Milliseconds, 0 to disable, default 5_000
+      conversionTime: 1_000, // Milliseconds, 0 to disable, default 10_000
       pdfErrorChance: 0.5, // 0 to 1, 0.5 = 50%, chance for the random error on PDF convert button click, default 0.5
-      hideDownloadButtonChance: 0.3, // 0 to 1, 0.5 = 50%, chance for the download button to be hidden, default 0.3
-      fileDownloadCrashChance: 0.5, // 0 to 1, 0.5 = 50%, chance for the download to crash and return 500, default 0.5
+      hideDownloadButtonChance: 0, // 0 to 1, 0.5 = 50%, chance for the download button to be hidden, default 0.3
+      fileDownloadCrashChance: 0, // 0 to 1, 0.5 = 50%, chance for the download to crash and return 500, default 0.5
       emptyResultFileChance: 0.3, // 0 to 1, 0.5 = 50%, chance for resulting DOCX file to be empty, default 0.3
     },
   },

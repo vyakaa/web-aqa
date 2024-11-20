@@ -51,17 +51,18 @@ test('TC_003: should mask a password', async () => {
     password: 'SecurePassword',
   },
 ].forEach(({ testCase, email, password }) => {
-  test.fail(`TC_004: should login with ${testCase}`, async () => {
+  test.fail(`TC_004, B001: should login with ${testCase}`, async () => {
     await loginPage.loginWithCredentials(`${email}`, `${password}`);
 
-    expect(await loginPage.isAlertDisplayed()).toBeTruthy();
+    expect(await loginPage.isErrorAlertDisplayed()).toBeTruthy();
     expect(await loginPage.getAlertText()).toEqual(expect.anything());
   });
 });
 
 test.fail('TC_005: should login with alias in email', async ({ page }) => {
   await loginPage.loginWithCredentials('aqa+1@example.com', 'SecurePassword');
+  await page.waitForLoadState();
 
-  expect(await loginPage.getAlertText()).toBe('');
+  expect(await loginPage.isErrorAlertDisplayed()).toBeFalsy();
   await expect(page).toHaveURL('/convert');
 });

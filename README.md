@@ -7,10 +7,7 @@
 - Project setup with Playwright version 1.48.2. A config file is in `./playwright.config.ts` directory.
 - All scripts are written in Typescript.
 - Page Object model is in the `./pageObjects` folder.
-- Mock and test data are in `./fixtures` directory.
-- Helper functions and methods are in `./helpers` directory.
-- All api methods and calls are in `./helpers/api` directory.
-- Smoke tests are marked with `@smoke` tag.
+- Test files are in `./test-files` directory.
 
 It supports and provides:
 
@@ -20,23 +17,13 @@ It supports and provides:
 
 #### Pre-requisites
 
-1. NodeJS installed globally in the system.
-   https://nodejs.org/en/download/
-
-2. Clonning repo
-
-#### Setup Scripts
-
-- Clone the repository into a folder by running git clone TODO
-- Open project folder in VS Code or other IDE and launch a terminal
-- Run the following command from terminal `npm install --legacy-peer-deps`
-- All the dependencies from package.json and ambient typings will be installed in `node_modules` folder.
-
-3. Run tests locally:
-   !!! `.env` file
-
-Headless mode is ON by default. if you want to change it open `playwright.config.ts` file and set 'headless' property to false
+NodeJS installed globally in the system.
+https://nodejs.org/en/download/
 
 #### Run Scripts
 
-- For running smoke tests `npm run smoke`
+Headless mode is ON by default. if you want to change it open `playwright.config.ts` file and set `headless` property to `false`.
+
+- For running tests `npm run tests`, this includes Desktop and Mobile configuration for Chromium.
+- There is also another configuration for local check for flakiness, it runs Desktop Chromium: `npm run tests:check_for_flakiness`.
+- Show HTML report: `npm run report`.
