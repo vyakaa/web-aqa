@@ -2,15 +2,15 @@ import { Locator, Page } from '@playwright/test';
 
 export class BasePage {
   readonly page: Page;
-  readonly _logoutButton: Locator;
+  readonly _alert: Locator;
   readonly _logoHeader: Locator;
-  readonly _spinner: Locator;
+  readonly _logoutButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
-    this._logoutButton = this.page.locator('.btn-neutral');
+    this._alert = this.page.locator('.alert');
     this._logoHeader = this.page.locator('.text-xl');
-    this._spinner = this.page.locator('');
+    this._logoutButton = this.page.locator('.btn-neutral');
   }
 
   async isLogoDisplayed() {
@@ -21,17 +21,11 @@ export class BasePage {
     await this._logoutButton.click();
   }
 
-  async clickOutsideBanner() {
-    await this.page.mouse.click(200, 200);
+  async isAlertDisplayed() {
+    return await this._alert.isVisible();
   }
 
-  async countInvalidFields() {
-    return await this.page.locator('input[aria-invalid="true"]').count();
-  }
-
-  async waitForProgressBarNotPresent() {
-    await this.page.waitForSelector('[role="progressbar"]', {
-      state: 'detached',
-    });
+  async getAlertText() {
+    return await this._alert.innerText();
   }
 }

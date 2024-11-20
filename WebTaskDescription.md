@@ -72,12 +72,12 @@ By default, it will be `http://localhost:3000` (aka `origin`)
 - Ensure the user is redirected to the appropriate homepage or dashboard after a successful login
 - Ensure the login form error messages are clear, concise, and do not expose sensitive details
 - Ensure a spinner appears during pages load
-- !!! Verify if the system respects case sensitivity for both usernames and passwords, as per requirements
-- !!! Attempt login with special characters in the username and password fields to verify input handling
-- !!! Test logging in from multiple devices or browsers with the same account and verify session handling
-- !!! Test for SQL injection vulnerabilities in the username and password fields
-- !!! Validate that the login and logout fields are safe from XSS attacks
+- Verify if the system respects case sensitivity for both usernames and passwords, as per requirements
+- Attempt login with special characters in the username and password fields to verify input handling
 - Ensure a user can log in using valid credentials
+
+#
+
 - Ensure that the user can successfully upload a PDF file for conversion
 - Ensure a progress indicator or status message is displayed during the conversion process
 - Convert a PDF with plain text (no images or formatting) into DOCX and verify all text is present and readable
@@ -91,7 +91,7 @@ By default, it will be `http://localhost:3000` (aka `origin`)
 - Ensure that the UI provides clear instructions for uploading a PDF and downloading the converted DOCX
 - Upload history...
 - Upload history...
-- !!! Verify that an inactive session logs the user out after the timeout period, as per requirements
+- Verify that an inactive session logs the user out after the timeout period
 - Ensure the logout button is visible and accessible from all pages where the user is logged in
 - Ensure that clicking the logout button logs the user out and redirects to the clean login page (fields are cleared, no session data remains)
 - Ensure that the user cannot access secured pages or features after logging out without logging in again

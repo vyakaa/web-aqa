@@ -7,10 +7,9 @@ export class LoginPage extends BasePage {
     'input[name="password"]'
   );
   readonly _submitButton: Locator = this.page.locator('button[type="submit"]');
-  readonly _alert: Locator = this.page.locator('.alert');
 
   async open() {
-    await this.page.goto('http://localhost:3000/');
+    await this.page.goto('', { waitUntil: 'networkidle' });
   }
 
   async enterEmail(email: string) {
@@ -29,13 +28,5 @@ export class LoginPage extends BasePage {
     await this.enterEmail(email);
     await this.enterPassword(password);
     await this.clickSubmitButton();
-  }
-
-  async isAlertEnabled() {
-    return await this._alert.isVisible();
-  }
-
-  async getAlertText() {
-    return await this._alert.innerText();
   }
 }

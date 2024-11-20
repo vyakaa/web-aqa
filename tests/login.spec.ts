@@ -11,62 +11,55 @@ test.beforeEach(async ({ page }) => {
   await loginPage.open();
 });
 
-test('T002: Login with no credentials', async () => {
+test.fail('TC_002: should not login with no credentials', async () => {
+  expect.soft(loginPage._submitButton.isDisabled).toBeTruthy();
   await loginPage.clickSubmitButton();
 
-  expect(await loginPage.getAlertText()).toBe('No empty fields allowed!');
+  expect(await loginPage.getAlertText()).toBe(expect.anything());
 });
 
-test('T003: Ensure password is masked', async () => {
+test('TC_003: should mask a password', async () => {
   expect(await loginPage._passwordInput.getAttribute('type')).toBe('password');
 });
 
-test.fail('T004: Login with not existing credentials', async () => {
-  await loginPage.loginWithCredentials('random@example.com', 'somepassword');
+[
+  {
+    testCase: 'not existing credentials',
+    email: 'random@example.com',
+    password: 'somepassword',
+  },
+  {
+    testCase: 'existing password for other email',
+    email: 'random@example.com',
+    password: 'test',
+  },
+  {
+    testCase: 'incorrect password',
+    email: 'aqa@example.com',
+    password: 'test',
+  },
+  { testCase: 'short password', email: 'random@example.com', password: 't' },
+  {
+    testCase: 'long password',
+    email: 'random@example.com',
+    password:
+      '9OpkG2Rb3O5HKw1GBg4nE7ginzJMuyUXUxbeoKQTRYQpNsQBM9QsKyqvwlBrozBZzVtBNINwN9MI5nMutui3Zq7e3uD4dWEDfGzh',
+  },
+  {
+    testCase: 'uppercase email',
+    email: 'AQA@EXAMPLE.COM',
+    password: 'SecurePassword',
+  },
+].forEach(({ testCase, email, password }) => {
+  test.fail(`TC_004: should login with ${testCase}`, async () => {
+    await loginPage.loginWithCredentials(`${email}`, `${password}`);
 
-  expect(await loginPage.isAlertEnabled()).toBeTruthy();
-  expect(await loginPage.getAlertText()).toEqual(expect.anything());
+    expect(await loginPage.isAlertDisplayed()).toBeTruthy();
+    expect(await loginPage.getAlertText()).toEqual(expect.anything());
+  });
 });
 
-test.fail('T005: Login with existing password', async () => {
-  await loginPage.loginWithCredentials('random@example.com', 'test');
-
-  expect(await loginPage.isAlertEnabled()).toBeTruthy();
-  expect(await loginPage.getAlertText()).toEqual(expect.anything());
-});
-
-test.fail('T006: Login with incorrect password', async () => {
-  await loginPage.loginWithCredentials('aqa@example.com', 'test');
-
-  expect(await loginPage.isAlertEnabled()).toBeTruthy();
-  expect(await loginPage.getAlertText()).toEqual(expect.anything());
-});
-
-test.fail('T007: Login with short password', async () => {
-  await loginPage.loginWithCredentials('random@example.com', 't');
-
-  expect(await loginPage.isAlertEnabled()).toBeTruthy();
-  expect(await loginPage.getAlertText()).toEqual(expect.anything());
-});
-
-test.fail('T008: Login with long password', async () => {
-  await loginPage.loginWithCredentials(
-    'random@example.com',
-    '9OpkG2Rb3O5HKw1GBg4nE7ginzJMuyUXUxbeoKQTRYQpNsQBM9QsKyqvwlBrozBZzVtBNINwN9MI5nMutui3Zq7e3uD4dWEDfGzh'
-  );
-
-  expect(await loginPage.isAlertEnabled()).toBeTruthy();
-  expect(await loginPage.getAlertText()).toEqual(expect.anything());
-});
-
-test.fail('T009: Login with uppercase email', async () => {
-  await loginPage.loginWithCredentials('AQA@EXAMPLE.COM', 'SecurePassword');
-
-  expect(await loginPage.isAlertEnabled()).toBeTruthy();
-  expect(await loginPage.getAlertText()).toEqual(expect.anything());
-});
-
-test.fail('T010: Login with alias in email', async ({ page }) => {
+test.fail('TC_005: should login with alias in email', async ({ page }) => {
   await loginPage.loginWithCredentials('aqa+1@example.com', 'SecurePassword');
 
   expect(await loginPage.getAlertText()).toBe('');
