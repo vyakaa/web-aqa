@@ -104,13 +104,7 @@ test('TC_014: should display error message for non-pdf file uploaded', async () 
 
 test.describe('Download converted files', async () => {
   test.afterEach(async () => {
-    fs.unlink(PATH_CONVERTED_FILE, (err) => {
-      if (err) {
-        console.error(err);
-      } else {
-        console.log('File is deleted.');
-      }
-    });
+    fs.unlink(PATH_CONVERTED_FILE, (_) => {});
   });
 
   test.fail('TC_013, B005, B013: should download a converted docx file', async () => {

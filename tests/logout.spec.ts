@@ -13,7 +13,7 @@ import { HistoryPage } from '../page-objects/historyPage';
     await newPage.open();
     await newPage.clickLogout();
 
-    expect(page.url()).toBe('http://localhost:3000/');
+    await expect(page).toHaveURL('/');
     expect((await page.context().storageState()).cookies).toBeNull();
   });
 });

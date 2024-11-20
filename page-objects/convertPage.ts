@@ -4,11 +4,11 @@ import { readFileSync } from 'fs';
 import fs from 'fs';
 
 export class ConvertPage extends BasePage {
-  readonly _uploadFileButton: Locator = this.page.locator('input[type="file"]');
-  readonly _convertFileButton: Locator = this.page.locator('button[type="submit"]');
-  readonly _deleteFileButton: Locator = this.page.locator('.btn-square');
-  readonly _goToUploadHistoryButton: Locator = this.page.locator('.link');
-  readonly _downloadConvertedFileButton: Locator = this.page.locator('.card-actions > a');
+  readonly uploadFileButton: Locator = this.page.locator('input[type="file"]');
+  readonly convertFileButton: Locator = this.page.locator('button[type="submit"]');
+  readonly deleteFileButton: Locator = this.page.locator('.btn-square');
+  readonly goToUploadHistoryButton: Locator = this.page.locator('.link');
+  readonly downloadConvertedFileButton: Locator = this.page.locator('.card-actions > a');
 
   async open() {
     await this.page.goto('/convert', { waitUntil: 'networkidle' });
@@ -32,11 +32,11 @@ export class ConvertPage extends BasePage {
   }
 
   async deleteUploadedFile() {
-    await this._deleteFileButton.click();
+    await this.deleteFileButton.click();
   }
 
   async clickConvert() {
-    await this._convertFileButton.click();
+    await this.convertFileButton.click();
   }
 
   async uploadAndConvertFile(name: string) {
@@ -54,11 +54,11 @@ export class ConvertPage extends BasePage {
   }
 
   async goToUploadHistory() {
-    await this._goToUploadHistoryButton.click();
+    await this.goToUploadHistoryButton.click();
   }
 
   async getUploadHistoryText() {
-    return await this._goToUploadHistoryButton.innerText();
+    return await this.goToUploadHistoryButton.innerText();
   }
 
   async getUploadHistoryFilesCount() {
@@ -67,11 +67,11 @@ export class ConvertPage extends BasePage {
   }
 
   async isDownloadConvertedFileAvailable() {
-    return await this._downloadConvertedFileButton.isVisible();
+    return await this.downloadConvertedFileButton.isVisible();
   }
 
   async getDownloadConvertedFileLink() {
-    return await this._downloadConvertedFileButton.getAttribute('href');
+    return await this.downloadConvertedFileButton.getAttribute('href');
   }
 
   async downloadConvertedFile() {
@@ -79,7 +79,7 @@ export class ConvertPage extends BasePage {
 
     const [download] = await Promise.all([
       this.page.waitForEvent('download'),
-      this._downloadConvertedFileButton.click(),
+      this.downloadConvertedFileButton.click(),
     ]);
 
     const path = './test-files/' + download.suggestedFilename();
@@ -93,7 +93,7 @@ export class ConvertPage extends BasePage {
   }
 
   async deleteConvertedFile() {
-    await this._deleteFileButton.click();
+    await this.deleteFileButton.click();
   }
 
   async waitForProgressBarToDisappear() {

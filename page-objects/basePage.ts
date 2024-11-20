@@ -2,33 +2,33 @@ import { Locator, Page } from '@playwright/test';
 
 export class BasePage {
   readonly page: Page;
-  readonly _alertError: Locator;
-  readonly _alertSuccess: Locator;
-  readonly _logoHeader: Locator;
-  readonly _logoutButton: Locator;
+  readonly alertError: Locator;
+  readonly alertSuccess: Locator;
+  readonly logoHeader: Locator;
+  readonly logoutButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
-    this._alertError = this.page.locator('.alert-error');
-    this._alertSuccess = this.page.locator('.alert-success');
-    this._logoHeader = this.page.locator('.text-xl');
-    this._logoutButton = this.page.locator('.btn-neutral');
+    this.alertError = this.page.locator('.alert-error');
+    this.alertSuccess = this.page.locator('.alert-success');
+    this.logoHeader = this.page.locator('.text-xl');
+    this.logoutButton = this.page.locator('.btn-neutral');
   }
 
   async isLogoDisplayed() {
-    return await this._logoHeader.isVisible();
+    return await this.logoHeader.isVisible();
   }
 
   async clickLogout() {
-    await this._logoutButton.click();
+    await this.logoutButton.click();
   }
 
   async isErrorAlertDisplayed() {
-    return await this._alertError.isVisible();
+    return await this.alertError.isVisible();
   }
 
   async isSuccessAlertDisplayed() {
-    return await this._alertSuccess.isVisible();
+    return await this.alertSuccess.isVisible();
   }
 
   async getAlertText() {

@@ -93,7 +93,7 @@ By default, it will be `http://localhost:3000` (aka `origin`)
 - [TC_004] [TC_014] Ensure that appropriate error messages are displayed for invalid inputs or failed conversions
 
 - TODO: Test advanced formatting and content are preserved after conversion (e.g. text formatting, fonts, images, tables, hyperlinks)
-- TODO: Test conversion of PDFs with text in multiple languages to ensure all characters are preserved
+- TODO: Test conversion of PDFs with text in multiple languages to ensure all characters (like diacritics, emojis, and hieroglyphs) are preserved
 - TODO: Convert a PDF with special characters (e.g., ©, €, etc.) and ensure they appear correctly in the DOCX
 - TODO: Ensure conversion of a password-protected PDF and ensure the system prompts for the password or displays an appropriate error
 - TODO: Perform OWASP top-10 security testing of application
@@ -115,9 +115,3 @@ By default, it will be `http://localhost:3000` (aka `origin`)
 - B009: [Medium] [Convert] 'File is corrupted' / 'File is too large' / 'File is empty' messages appears randomly on same file upload
 - B004: [Medium] [History] It is impossible to access neither uploaded nor converted files from history
 - B011: [Low] [Home] No global spinner when pages load
-
-### TODO
-
-// review
-// check for OOP, DRY, KISS, SOLID
-// share public repo

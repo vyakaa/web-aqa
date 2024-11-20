@@ -1,10 +1,8 @@
 import { test as setup, expect } from '@playwright/test';
 import { LoginPage } from '../page-objects/loginPage';
 
-let loginPage: LoginPage;
-
 setup('TC_001: should login successfully using valid credentials', async ({ page }) => {
-  loginPage = new LoginPage(page);
+  const loginPage = new LoginPage(page);
   await loginPage.open();
   await loginPage.loginWithCredentials('aqa@example.com', 'SecurePassword');
   await page.waitForLoadState();

@@ -2,24 +2,24 @@ import { Locator } from '@playwright/test';
 import { BasePage } from './basePage';
 
 export class LoginPage extends BasePage {
-  readonly _emailInput: Locator = this.page.locator('input[name="email"]');
-  readonly _passwordInput: Locator = this.page.locator('input[name="password"]');
-  readonly _submitButton: Locator = this.page.locator('button[type="submit"]');
+  readonly emailInput: Locator = this.page.locator('input[name="email"]');
+  readonly passwordInput: Locator = this.page.locator('input[name="password"]');
+  readonly submitButton: Locator = this.page.locator('button[type="submit"]');
 
   async open() {
     await this.page.goto('', { waitUntil: 'networkidle' });
   }
 
   async enterEmail(email: string) {
-    await this._emailInput.fill(email);
+    await this.emailInput.fill(email);
   }
 
   async enterPassword(password: string) {
-    await this._passwordInput.fill(password);
+    await this.passwordInput.fill(password);
   }
 
   async clickSubmitButton() {
-    await this._submitButton.click();
+    await this.submitButton.click();
   }
 
   async loginWithCredentials(email: string, password: string) {

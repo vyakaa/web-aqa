@@ -12,14 +12,14 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.fail('TC_002: should not login with no credentials', async () => {
-  expect.soft(loginPage._submitButton.isDisabled).toBeTruthy();
+  expect.soft(loginPage.submitButton.isDisabled).toBeTruthy();
   await loginPage.clickSubmitButton();
 
   expect(await loginPage.getAlertText()).toBe(expect.anything());
 });
 
 test('TC_003: should mask a password', async () => {
-  expect(await loginPage._passwordInput.getAttribute('type')).toBe('password');
+  expect(await loginPage.passwordInput.getAttribute('type')).toBe('password');
 });
 
 [

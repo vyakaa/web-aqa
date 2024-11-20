@@ -15,9 +15,9 @@ test('TC_020: should open home page by direct url', async ({ page }) => {
 });
 
 test('TC_007: should display logo and logout button', async () => {
-  expect(homePage._logoHeader).toBeVisible();
-  expect(homePage._logoutButton).toBeVisible();
-  expect(await homePage._logoHeader.innerText()).toBe('⌨️ LOGO 🥸');
+  expect(homePage.logoHeader).toBeVisible();
+  expect(homePage.logoutButton).toBeVisible();
+  expect(await homePage.logoHeader.innerText()).toBe('⌨️ LOGO 🥸');
 });
 
 test('TC: should display welcome message and link to converter', async () => {

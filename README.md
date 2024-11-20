@@ -27,3 +27,10 @@ Headless mode is ON by default. if you want to change it open `playwright.config
 - For running tests `npm run tests`, this includes Desktop and Mobile configuration for Chromium.
 - There is also another configuration for local check for flakiness, it runs Desktop Chromium: `npm run tests:check_for_flakiness`.
 - Show HTML report: `npm run report`.
+
+## Copyright and Usage
+
+Copyright (c) 2024 Viktoriia Chykrii.
+
+This repository contains personal assigment, web application and tests. The tests are located in './tests' folder and were implemented by Viktoriia Chykrii. The code is intended solely for educational purposes, and unauthorized copying, distribution, or modification is strictly prohibited. This code is not licensed for commercial use.
+
